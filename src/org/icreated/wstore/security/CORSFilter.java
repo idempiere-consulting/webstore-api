@@ -30,7 +30,7 @@ public class CORSFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext request, ContainerResponseContext response) throws IOException {
     	
     	
- //   	System.out.println("CORS JERSEY FILTER 2222");
+    	System.out.println("CORS JERSEY FILTER 2222");
         response.getHeaders().add("Access-Control-Allow-Origin", "*");
         response.getHeaders().add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization, ApplicationId");
         response.getHeaders().add("Access-Control-Allow-Credentials", "true");

@@ -1,26 +1,26 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <units size='1'>
-  <unit id='org.icreated.wstore.api' version='6.2.0.201911261929' generation='2'>
-    <update id='org.icreated.wstore.api' range='[0.0.0,6.2.0.201911261929)' severity='0'/>
+  <unit id='org.icreated.wstore.api' version='7.1.0.202007241403' generation='2'>
+    <update id='org.icreated.wstore.api' range='[0.0.0,7.1.0.202007241403)' severity='0'/>
     <properties size='5'>
       <property name='org.eclipse.equinox.p2.name' value='WebStore API'/>
       <property name='org.eclipse.equinox.p2.provider' value='ICreated'/>
       <property name='maven-groupId' value='org.idempiere'/>
       <property name='maven-artifactId' value='org.icreated.wstore.api'/>
-      <property name='maven-version' value='6.2.0-SNAPSHOT'/>
+      <property name='maven-version' value='7.1.0-SNAPSHOT'/>
     </properties>
     <provides size='4'>
-      <provided namespace='org.eclipse.equinox.p2.iu' name='org.icreated.wstore.api' version='6.2.0.201911261929'/>
-      <provided namespace='osgi.bundle' name='org.icreated.wstore.api' version='6.2.0.201911261929'/>
-      <provided namespace='osgi.identity' name='org.icreated.wstore.api' version='6.2.0.201911261929'>
+      <provided namespace='org.eclipse.equinox.p2.iu' name='org.icreated.wstore.api' version='7.1.0.202007241403'/>
+      <provided namespace='osgi.bundle' name='org.icreated.wstore.api' version='7.1.0.202007241403'/>
+      <provided namespace='osgi.identity' name='org.icreated.wstore.api' version='7.1.0.202007241403'>
         <properties size='1'>
           <property name='type' value='osgi.bundle'/>
         </properties>
       </provided>
       <provided namespace='org.eclipse.equinox.p2.eclipse.type' name='bundle' version='1.0.0'/>
     </provides>
-    <requires size='92'>
-      <required namespace='osgi.bundle' name='org.adempiere.base' range='6.2.0'/>
+    <requires size='89'>
+      <required namespace='osgi.bundle' name='org.adempiere.base' range='7.1.0'/>
       <required namespace='java.package' name='com.fasterxml.jackson.annotation' range='0.0.0'/>
       <required namespace='java.package' name='com.fasterxml.jackson.core' range='0.0.0'/>
       <required namespace='java.package' name='com.fasterxml.jackson.core.base' range='2.9.8'/>
@@ -100,9 +100,6 @@
       <required namespace='java.package' name='org.glassfish.jersey.server.monitoring' range='2.22.1'/>
       <required namespace='java.package' name='org.glassfish.jersey.server.spi' range='2.22.1'/>
       <required namespace='java.package' name='org.glassfish.jersey.server.spi.internal' range='2.22.1'/>
-      <required namespace='java.package' name='org.glassfish.jersey.servlet' range='2.22.1'/>
-      <required namespace='java.package' name='org.glassfish.jersey.servlet.async' range='2.22.1'/>
-      <required namespace='java.package' name='org.glassfish.jersey.servlet.init' range='2.22.1'/>
       <required namespace='java.package' name='org.glassfish.jersey.servlet.internal' range='2.22.1'/>
       <required namespace='java.package' name='org.glassfish.jersey.servlet.internal.spi' range='2.22.1'/>
       <required namespace='java.package' name='org.glassfish.jersey.servlet.spi' range='2.22.1'/>
@@ -114,13 +111,13 @@
       <requiredProperties namespace='osgi.ee' match='(&amp;(osgi.ee=JavaSE)(version&gt;=1.11))'/>
     </requires>
     <artifacts size='1'>
-      <artifact classifier='osgi.bundle' id='org.icreated.wstore.api' version='6.2.0.201911261929'/>
+      <artifact classifier='osgi.bundle' id='org.icreated.wstore.api' version='7.1.0.202007241403'/>
     </artifacts>
     <touchpoint id='org.eclipse.equinox.p2.osgi' version='1.0.0'/>
     <touchpointData size='1'>
       <instructions size='1'>
         <instruction key='manifest'>
-          Bundle-SymbolicName: org.icreated.wstore.api;singleton:=true&#xA;Bundle-Version: 6.2.0.201911261929&#xA;
+          Bundle-SymbolicName: org.icreated.wstore.api;singleton:=true&#xA;Bundle-Version: 7.1.0.202007241403&#xA;
         </instruction>
       </instructions>
     </touchpointData>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WebStore API
 Bundle-SymbolicName: org.icreated.wstore.api;singleton:=true
-Bundle-Version: 6.2.0.201911261929
+Bundle-Version: 7.1.0.202007241403
 Bundle-Vendor: ICreated
 Bundle-Activator: org.icreated.wstore.api.Activator
 Bundle-ActivationPolicy: lazy
@@ -15,7 +15,7 @@ Bundle-ClassPath: .,WEB-INF/classes/,WEB-INF/lib/classgraph.jar,WEB-INF/
 Automatic-Module-Name: org.icreated.wstore.api
 Comment: Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.11))"
-Require-Bundle: org.adempiere.base;bundle-version="6.2.0"
+Require-Bundle: org.adempiere.base;bundle-version="7.1.0"
 Import-Package: com.fasterxml.jackson.annotation,com.fasterxml.jackson.c
  ore,com.fasterxml.jackson.core.base;version="2.9.8",com.fasterxml.jacks
  on.core.io;version="2.9.8",com.fasterxml.jackson.core.json;version="2.9
@@ -66,13 +66,11 @@ Import-Package: com.fasterxml.jackson.annotation,com.fasterxml.jackson.c
  22.1",org.glassfish.jersey.server.model.internal;version="2.22.1",org.g
  lassfish.jersey.server.monitoring;version="2.22.1",org.glassfish.jersey
  .server.spi;version="2.22.1",org.glassfish.jersey.server.spi.internal;v
- ersion="2.22.1",org.glassfish.jersey.servlet;version="2.22.1",org.glass
- fish.jersey.servlet.async;version="2.22.1",org.glassfish.jersey.servlet
- .init;version="2.22.1",org.glassfish.jersey.servlet.internal;version="2
- .22.1",org.glassfish.jersey.servlet.internal.spi;version="2.22.1",org.g
- lassfish.jersey.servlet.spi;version="2.22.1",org.glassfish.jersey.spi;v
- ersion="2.22.1",org.glassfish.jersey.uri;version="2.22.1",org.glassfish
- .jersey.uri.internal;version="2.22.1",org.osgi.framework,org.slf4j;vers
- ion="1.7.25"
+ ersion="2.22.1",org.glassfish.jersey.servlet.internal;version="2.22.1",
+ org.glassfish.jersey.servlet.internal.spi;version="2.22.1",org.glassfis
+ h.jersey.servlet.spi;version="2.22.1",org.glassfish.jersey.spi;version=
+ "2.22.1",org.glassfish.jersey.uri;version="2.22.1",org.glassfish.jersey
+ .uri.internal;version="2.22.1",org.osgi.framework,org.slf4j;version="1.
+ 7.25"
 Web-ContextPath: services
 
