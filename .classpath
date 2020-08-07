@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jersey-container-servlet.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
@@ -7,7 +8,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="WEB-INF/classes" sourcepath="WEB-INF/classes"/>
+	<classpathentry exported="true" kind="lib" path="WEB-INF/classes" sourcepath="src"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/classgraph.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jackson-dataformat-yaml.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jjwt-api.jar"/>

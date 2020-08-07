@@ -19,11 +19,13 @@ Bundle-ClassPath: .,
  WEB-INF/lib/swagger-integration.jar,
  WEB-INF/lib/swagger-jaxrs2-servlet-initializer.jar,
  WEB-INF/lib/swagger-jaxrs2.jar,
- WEB-INF/lib/swagger-models.jar
+ WEB-INF/lib/swagger-models.jar,
+ WEB-INF/lib/jersey-container-servlet.jar
 Automatic-Module-Name: org.icreated.wstore.api
 Comment: Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.11))"
-Require-Bundle: org.adempiere.base;bundle-version="7.1.0"
+Require-Bundle: org.adempiere.base;bundle-version="7.1.0",
+ org.idempiere.webservices;bundle-version="7.1.0"
 Import-Package: com.fasterxml.jackson.annotation,
  com.fasterxml.jackson.core,
  com.fasterxml.jackson.core.base;version="2.9.8",
@@ -63,7 +65,6 @@ Import-Package: com.fasterxml.jackson.annotation,
  org.apache.commons.lang3.math;version="3.1.0",
  org.apache.commons.lang3.tuple;version="3.1.0",
  org.apache.commons.logging,
- org.compiere.model,
  org.eclipse.equinox.app;version="1.1.0",
  org.glassfish.hk2.api,
  org.glassfish.hk2.utilities,

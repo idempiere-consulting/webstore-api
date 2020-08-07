@@ -24,9 +24,11 @@ import org.icreated.wstore.endpoints.AuthenticationEndpoints;
 import org.icreated.wstore.endpoints.CatalogEndpoints;
 import org.icreated.wstore.endpoints.CheckoutEndpoints;
 import org.icreated.wstore.endpoints.CommonEndpoints;
+import org.icreated.wstore.endpoints.IdempiereParaEndpoints;
 import org.icreated.wstore.factory.AccountServiceFactory;
 import org.icreated.wstore.factory.CatalogServiceFactory;
 import org.icreated.wstore.factory.ContextFactory;
+import org.icreated.wstore.factory.IdempiereParaServiceFactory;
 import org.icreated.wstore.factory.OrderServiceFactory;
 import org.icreated.wstore.factory.PaymentServiceFactory;
 import org.icreated.wstore.security.CORSFilter;
@@ -34,6 +36,7 @@ import org.icreated.wstore.security.CheckRequestFilter;
 import org.icreated.wstore.security.JwtAuthenticationFilter;
 import org.icreated.wstore.service.AccountService;
 import org.icreated.wstore.service.CatalogService;
+import org.icreated.wstore.service.IdempiereParaService;
 import org.icreated.wstore.service.OrderService;
 import org.icreated.wstore.service.PaymentService;
 
@@ -54,6 +57,8 @@ public class WStoreApplication extends ResourceConfig {
     	register(CheckRequestFilter.class);
     	register(JwtAuthenticationFilter.class);
     	register(AuthenticationEndpoints.class);
+    	
+    	register(IdempiereParaEndpoints.class);
 
  //   	register(new LoggingFilter());
     	
@@ -100,6 +105,14 @@ public class WStoreApplication extends ResourceConfig {
             protected void configure() {
                 bindFactory(PaymentServiceFactory.class)
                         .to(PaymentService.class);
+            } 
+        });
+    	
+    	register(new AbstractBinder(){
+            @Override
+            protected void configure() {
+                bindFactory(IdempiereParaServiceFactory.class)
+                        .to(IdempiereParaService.class);
             } 
         });
 
