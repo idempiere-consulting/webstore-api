@@ -53,6 +53,20 @@ public enum Envs
 	  return s_cacheCtx.get(W_Store_ID);
   }
   
+  public static Properties getCtxByClient(int AD_Client_ID) {
+	  List<WStore> stores = getListWebStore();
+	  if (s_cacheCtx == null || s_cacheCtx.size() == 0) {
+		  for (WStore store : stores) {
+			s_cacheCtx.put(store.getW_Store_ID(), getCtx(store));
+		  } 		  
+	  }
+	  Properties ctxNew = getCtx(stores.stream()
+			  .filter(st -> st.getAD_Client_ID() == AD_Client_ID)
+			  .findAny().orElse(null));
+	  
+	  return ctxNew; 
+  }
+  
  
   
   private static Properties getCtx(WStore wstore)  {

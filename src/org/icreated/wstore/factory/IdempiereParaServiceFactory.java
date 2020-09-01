@@ -21,7 +21,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import org.compiere.util.DB;
 import org.glassfish.hk2.api.Factory;
+import org.icreated.wstore.Envs;
 import org.icreated.wstore.bean.SessionUser;
 import org.icreated.wstore.service.IdempiereParaService;
 
@@ -40,6 +42,9 @@ public class IdempiereParaServiceFactory implements Factory<IdempiereParaService
                     .entity("You are not authorized.")
                     .build());
         }
+        int adClientID = DB.getSQLValue(null, "SELECT AD_Client_ID FROM AD_USER WHERE AD_User_ID=?", sessionUser.getAD_User_ID());
+        ctx = Envs.getCtxByClient(adClientID);
+		context.setProperty("ctx", ctx);
         context.setProperty("idempiereParaService",  new IdempiereParaService(ctx,sessionUser));  
 
     }
