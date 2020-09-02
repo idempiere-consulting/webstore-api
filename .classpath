@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jersey-container-servlet.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -21,5 +20,6 @@
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-jaxrs2-servlet-initializer.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-jaxrs2.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-models.jar"/>
+	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jersey-container-servlet.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
