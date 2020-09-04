@@ -40,6 +40,7 @@ import org.compiere.model.MWindow;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.model.X_WS_WebServiceFieldInput;
+import org.compiere.model.X_WS_WebService_Para;
 import org.compiere.util.CLogger;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
@@ -98,6 +99,12 @@ public class IdempiereParaService extends AService {
 		String colOutput[] = webREST.getOutputColumnNames(true);
 		String tableName = MTable.get(ctx, webREST.getAD_Table_ID(), null).getTableName();
 		StringBuilder sqlWhere = new StringBuilder();
+		///---- ADD Where
+		String addWhere = "";
+		X_WS_WebService_Para paraStatic = webREST.getParameter("Filter");
+		if(paraStatic!=null && X_WS_WebService_Para.PARAMETERTYPE_Constant.equals(paraStatic.getParameterType()))
+			addWhere = paraStatic.getConstantValue();
+		///----  ----------
 		int count = 0;
 		/// Se oltre alla chiamata_REST c'è qualche altro parametro di ricerca, allora creo query di filtro......
 		if(list.size()>1) {  
@@ -122,6 +129,12 @@ public class IdempiereParaService extends AService {
 			}
 		}
 		/// -----
+		if(!addWhere.isEmpty()) {
+			if(sqlWhere.toString().isEmpty())
+				sqlWhere.append(addWhere);
+			else
+				sqlWhere.append(" AND ").append(addWhere);
+		}
 		
 		Query qry = null;
 		String method = webREST.getWS_WebServiceMethod().getValue();
@@ -160,7 +173,7 @@ public class IdempiereParaService extends AService {
 			}
 			
 			break;
-		case serviceMethod_POST:
+		case serviceMethod_PUT:
 			if(bodyJson!=null && bodyJson.size()>0) {
 				qry = new Query(ctx, tableName, tableName+"_ID=?", null)
 						.setClient_ID()
@@ -183,7 +196,7 @@ public class IdempiereParaService extends AService {
 			}
 			
 			break;
-		case serviceMethod_PUT:
+		case serviceMethod_POST:
 			if(bodyJson!=null && bodyJson.size()>0 && webREST.get_ValueAsInt("AD_Tab_ID")>0) {
 				MUser mUser = MUser.get(ctx, sessionUser.getAD_User_ID());
 				MUserRoles usRole = new Query(ctx, MUserRoles.Table_Name, "AD_User_ID=? AND AD_Client_ID=?", null)

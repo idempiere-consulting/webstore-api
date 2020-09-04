@@ -58,6 +58,7 @@ public final class TokenHandler {
         return Jwts.builder()
         		.setSubject(user.getUsername())
                 .claim("name", user.getName())
+                .claim("idUser", user.getAD_User_ID())
                 .signWith(SECRET)
                 .compact();
     }
