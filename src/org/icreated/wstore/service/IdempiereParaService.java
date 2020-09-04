@@ -119,11 +119,11 @@ public class IdempiereParaService extends AService {
 					sqlWhere.append(input_C).append(" LIKE ?");
 				else {
 					sqlWhere.append(input_C).append("=?");
-					if (col.getAD_Reference_ID() == DisplayType.Integer || col.getAD_Reference_ID() == DisplayType.ID)
+					if (DisplayType.isID(col.getAD_Reference_ID()))
 						list.set((count), Integer.parseInt((String)list.get(count)));
 					else if (DisplayType.isNumeric (col.getAD_Reference_ID ()))
 						list.set((count), new BigDecimal((String)list.get(count)));
-					else if (col.getAD_Reference_ID() == DisplayType.Date || col.getAD_Reference_ID() == DisplayType.DateTime)
+					else if (DisplayType.isDate(col.getAD_Reference_ID()))
 						list.set((count), Timestamp.valueOf((String)list.get(count)));
 				}
 			}
