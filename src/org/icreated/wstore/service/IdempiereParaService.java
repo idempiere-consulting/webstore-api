@@ -216,6 +216,7 @@ public class IdempiereParaService extends AService {
 				List<String> listCol = new ArrayList<String>(Arrays.asList(colInput));
 				
 				GenericPO po = new GenericPO(tableName, ctx, 0);
+				po.set_ValueNoCheck("AD_Client_ID", mUser.getAD_Client_ID());
 				for (String input_C : listCol) {
 					po.set_ValueOfColumn(input_C, bodyJson.get(input_C));
 				}
