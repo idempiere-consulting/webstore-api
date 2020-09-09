@@ -30,13 +30,11 @@ import org.compiere.model.GridTab;
 import org.compiere.model.GridWindow;
 import org.compiere.model.GridWindowVO;
 import org.compiere.model.MColumn;
-import org.compiere.model.MRole;
 import org.compiere.model.MTab;
 import org.compiere.model.MTable;
 import org.compiere.model.MUser;
 import org.compiere.model.MUserRoles;
 import org.compiere.model.MWebServiceType;
-import org.compiere.model.MWindow;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.model.X_WS_WebServiceFieldInput;
@@ -47,10 +45,7 @@ import org.compiere.util.Env;
 import org.icreated.wstore.bean.SessionUser;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class IdempiereParaService extends AService {
 	
@@ -185,7 +180,14 @@ public class IdempiereParaService extends AService {
 						if(input_C.equalsIgnoreCase(tableName+"_ID")) //scarto la colonna ID della tabella....
 							continue;
 						
-						po.set_ValueOfColumn(input_C, bodyJson.get(input_C));
+						X_WS_WebServiceFieldInput inputField = webREST.getFieldInput(input_C);
+						MColumn col = MColumn.get(ctx, inputField.getAD_Column_ID());
+						if (DisplayType.isDate(col.getAD_Reference_ID()))
+							po.set_ValueOfColumn(input_C, Timestamp.valueOf((String)bodyJson.get(input_C)));
+						else if (DisplayType.isNumeric (col.getAD_Reference_ID ()))
+							po.set_ValueOfColumn(input_C, new BigDecimal((String)bodyJson.get(input_C)));
+						else
+							po.set_ValueOfColumn(input_C, bodyJson.get(input_C));
 					}
 					po.getCtx().put("#AD_Client_ID", po.get_Value("AD_client_ID"));
 					if(po.save())
@@ -216,14 +218,22 @@ public class IdempiereParaService extends AService {
 				List<String> listCol = new ArrayList<String>(Arrays.asList(colInput));
 				
 				GenericPO po = new GenericPO(tableName, ctx, 0);
-				po.set_ValueNoCheck("AD_Client_ID", mUser.getAD_Client_ID());
-				po.set_ValueNoCheck("AD_Org_ID", mUser.getAD_Org_ID());
+				po.set_ValueOfColumn("AD_Client_ID", Env.getAD_Client_ID(ctx));
+				po.set_ValueOfColumn("AD_Org_ID", Env.getAD_Org_ID(ctx));
 				for (String input_C : listCol) {
-					po.set_ValueOfColumn(input_C, bodyJson.get(input_C));
+					X_WS_WebServiceFieldInput inputField = webREST.getFieldInput(input_C);
+					MColumn col = MColumn.get(ctx, inputField.getAD_Column_ID());
+					if (DisplayType.isDate(col.getAD_Reference_ID()))
+						po.set_ValueOfColumn(input_C, Timestamp.valueOf((String)bodyJson.get(input_C)));
+					else if (DisplayType.isNumeric (col.getAD_Reference_ID ()))
+						po.set_ValueOfColumn(input_C, new BigDecimal((String)bodyJson.get(input_C)));
+					else
+						po.set_ValueOfColumn(input_C, bodyJson.get(input_C));
 				}
 				//set value Default_Mandatory
 				for (GridField gridField : l_gridFields) {
-					if(gridField.isMandatory(true) && !listCol.contains(gridField.getColumnName())) {
+					if((!gridField.getColumnName().equalsIgnoreCase("AD_Client_ID") && !gridField.getColumnName().equalsIgnoreCase("AD_Org_ID")) 
+							&& gridField.isMandatory(true) && !listCol.contains(gridField.getColumnName())) {
 						po.set_ValueOfColumn(gridField.getColumnName(), gridField.getDefault());
 					}
 				}
