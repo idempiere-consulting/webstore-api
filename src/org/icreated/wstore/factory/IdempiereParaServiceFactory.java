@@ -44,6 +44,7 @@ public class IdempiereParaServiceFactory implements Factory<IdempiereParaService
         }
         int adClientID = DB.getSQLValue(null, "SELECT AD_Client_ID FROM AD_USER WHERE AD_User_ID=?", sessionUser.getAD_User_ID());
         ctx = Envs.getCtxByClient(adClientID);
+        ctx.setProperty("#AD_User_ID", String.valueOf(sessionUser.getAD_User_ID()));
 		context.setProperty("ctx", ctx);
         context.setProperty("idempiereParaService",  new IdempiereParaService(ctx,sessionUser));  
 

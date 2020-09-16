@@ -21,15 +21,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
+import java.util.stream.Stream;
 
 import javax.ws.rs.core.Response;
 
 import org.adempiere.model.GenericPO;
+import org.adempiere.util.ProcessUtil;
 import org.compiere.model.GridField;
 import org.compiere.model.GridTab;
 import org.compiere.model.GridWindow;
 import org.compiere.model.GridWindowVO;
 import org.compiere.model.MColumn;
+import org.compiere.model.MPInstance;
+import org.compiere.model.MPInstancePara;
+import org.compiere.model.MProcess;
+import org.compiere.model.MProcessPara;
 import org.compiere.model.MTab;
 import org.compiere.model.MTable;
 import org.compiere.model.MUser;
@@ -39,7 +45,10 @@ import org.compiere.model.PO;
 import org.compiere.model.Query;
 import org.compiere.model.X_WS_WebServiceFieldInput;
 import org.compiere.model.X_WS_WebService_Para;
+import org.compiere.process.ProcessInfo;
+import org.compiere.process.ProcessInfoParameter;
 import org.compiere.util.CLogger;
+import org.compiere.util.DB;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Env;
 import org.icreated.wstore.bean.SessionUser;
@@ -164,6 +173,60 @@ public class IdempiereParaService extends AService {
 					resp = Response.status(Response.Status.ACCEPTED).entity(jsonFinal).build();
 				} catch (JsonProcessingException e) {
 					resp = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"message\":\""+e.getMessage()+"\"}").build();   e.printStackTrace();
+				}
+			}
+			else {
+				X_WS_WebService_Para param_ = webREST.getParameter("AD_Process_UU");
+				if(param_!=null && X_WS_WebService_Para.PARAMETERTYPE_Constant.equals(param_.getParameterType())
+						&& bodyJson!=null && !bodyJson.isEmpty()) {
+					int idProcess = DB.getSQLValue(null, "SELECT AD_Process_ID FROM AD_Process WHERE AD_PROCESS_UU=?", param_.getConstantValue());
+					MProcess proc = new MProcess(ctx, idProcess, null);
+					MPInstance instance = new MPInstance(proc, 0);
+				    instance.saveEx();
+				    ProcessInfo poInfo = new ProcessInfo(proc.getName(), proc.getAD_Process_ID());
+				    if(bodyJson.containsKey("ids")) {
+				    	poInfo.setRecord_IDs(((List<Integer>) bodyJson.get("ids")));
+				    }
+				    //poInfo.setRecord_ID(1000003);
+				    poInfo.setAD_Process_ID(proc.getAD_Process_ID());
+				    poInfo.setAD_PInstance_ID(instance.getAD_PInstance_ID());
+				    poInfo.setAD_Process_UU(proc.getAD_Process_UU());
+				    poInfo.setClassName(proc.getClassname());
+				    ArrayList<ProcessInfoParameter> listPP = new ArrayList<ProcessInfoParameter>();
+				    MProcessPara[] p_parameter = proc.getParameters();
+				    MProcessPara paraTmp = null;
+				    int reference_ID = -1;
+				    for (Map.Entry<String, Object> entry : bodyJson.entrySet()) {
+				    	if(p_parameter.length>0) {
+				    		paraTmp = Arrays.stream(p_parameter).filter(mpp -> mpp.getColumnName().equals(entry.getKey()))
+				    				.findAny().orElse(null);
+				    		reference_ID = (paraTmp==null)?-1:paraTmp.getAD_Reference_ID();
+				    		if(reference_ID>0) {
+				    			if(DisplayType.isDate(reference_ID)) {
+				    				listPP.add(new ProcessInfoParameter(entry.getKey(), Timestamp.valueOf((String)entry.getValue()), null, null, null));
+				    				reference_ID = -1;
+				    				continue;
+				    			}
+				    			else if(DisplayType.isNumeric (reference_ID)) {
+				    				listPP.add(new ProcessInfoParameter(entry.getKey(), new BigDecimal((String)entry.getValue()), null, null, null));
+				    				reference_ID = -1;
+				    				continue;
+				    			}
+				    			reference_ID = -1;
+				    		}
+				    	}
+				    	listPP.add(new ProcessInfoParameter(entry.getKey(), entry.getValue(), null, null, null));
+				    }
+				    ProcessInfoParameter[] pars = new ProcessInfoParameter[listPP.size()];
+				    listPP.toArray(pars);
+				    poInfo.setParameter(pars);
+				    if(bodyJson.containsKey("ids")) {
+					    DB.createT_Selection(poInfo.getAD_PInstance_ID(), poInfo.getRecord_IDs(), null);
+						MPInstancePara ip = instance.createParameter(-1, "*RecordIDs*", poInfo.getRecord_IDs().toString());
+						ip.saveEx();
+				    }
+				    //poInfo.setTransientObject(bodyJson);
+				    ProcessUtil.startJavaProcess(ctx, poInfo, null);
 				}
 			}
 			

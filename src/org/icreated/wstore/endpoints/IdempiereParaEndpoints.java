@@ -51,13 +51,14 @@ public class IdempiereParaEndpoints {
 	    @Operation(summary = "Search para WebService", description = "Searching WebServices....")   
 		public Response get(
 				@Parameter(description = "Searching string", required = true) 
-				@PathParam("searchString") String searchString, 
+				@PathParam("searchString") String searchString,
+				@RequestBody Map<String, Object> bodyJson,
 				@Context IdempiereParaService idempiereParaService) {
 
 			//	Search Parameter
 			String search = searchString;
 		
-			return idempiereParaService.doSearchResp(search, null);
+			return idempiereParaService.doSearchResp(search, bodyJson);
 		}
 		
 	    @DELETE
