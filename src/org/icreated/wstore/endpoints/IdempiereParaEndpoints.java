@@ -28,6 +28,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.icreated.wstore.service.IdempiereParaService;
 
@@ -44,6 +45,8 @@ public class IdempiereParaEndpoints {
 	
 	    @Context
 	    Properties ctx;
+	    @Context
+	    UriInfo uri;
 
 	    @GET
 		@Path("/web/search/{searchString}")
@@ -57,6 +60,8 @@ public class IdempiereParaEndpoints {
 
 			//	Search Parameter
 			String search = searchString;
+			if(bodyJson!=null)
+				bodyJson.put("URI", uri);
 		
 			return idempiereParaService.doSearchResp(search, bodyJson);
 		}
@@ -89,6 +94,8 @@ public class IdempiereParaEndpoints {
 
 			//	Search Parameter
 			String search = searchString;
+			if(bodyJson!=null)
+				bodyJson.put("URI", uri);
 			System.out.println("BODY:::: "+bodyJson.toString());
 		
 			return idempiereParaService.doSearchResp(search, bodyJson);
@@ -107,6 +114,8 @@ public class IdempiereParaEndpoints {
 
 			//	Search Parameter
 			String search = searchString;
+			if(bodyJson!=null)
+				bodyJson.put("URI", uri);
 			System.out.println("BODY:::: "+bodyJson.toString());
 		
 			return idempiereParaService.doSearchResp(search, bodyJson);

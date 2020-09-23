@@ -14,6 +14,7 @@
 package org.icreated.wstore.service;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
-import java.util.stream.Stream;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.adempiere.model.GenericPO;
 import org.adempiere.util.ProcessUtil;
@@ -33,6 +34,7 @@ import org.compiere.model.GridWindow;
 import org.compiere.model.GridWindowVO;
 import org.compiere.model.MColumn;
 import org.compiere.model.MPInstance;
+import org.compiere.model.MPInstanceLog;
 import org.compiere.model.MPInstancePara;
 import org.compiere.model.MProcess;
 import org.compiere.model.MProcessPara;
@@ -43,6 +45,7 @@ import org.compiere.model.MUserRoles;
 import org.compiere.model.MWebServiceType;
 import org.compiere.model.PO;
 import org.compiere.model.Query;
+import org.compiere.model.X_AD_PInstance_Log;
 import org.compiere.model.X_WS_WebServiceFieldInput;
 import org.compiere.model.X_WS_WebService_Para;
 import org.compiere.process.ProcessInfo;
@@ -120,7 +123,7 @@ public class IdempiereParaService extends AService {
 				MColumn col = MColumn.get(ctx, inputField.getAD_Column_ID());		    			
 				String sqlType = DisplayType.getSQLDataType(col.getAD_Reference_ID(), col.getColumnName(), col.getFieldLength());
 				if(sqlType.contains("CHAR"))
-					sqlWhere.append(input_C).append(" LIKE ?");
+					sqlWhere.append("LOWER("+input_C+")").append(" LIKE LOWER(?)");
 				else {
 					sqlWhere.append(input_C).append("=?");
 					if (DisplayType.isID(col.getAD_Reference_ID()))
@@ -227,6 +230,35 @@ public class IdempiereParaService extends AService {
 				    }
 				    //poInfo.setTransientObject(bodyJson);
 				    ProcessUtil.startJavaProcess(ctx, poInfo, null);
+				    String txt = poInfo.getSummary();
+				    if(txt!=null && !txt.isEmpty())
+				    	resp = Response.status(Response.Status.ACCEPTED).entity("{\"cod\":\"WARN\", \"message\":[{\"msg\": \""+txt+"\", \"link\": \"null\"}]}").build();
+				    else {
+				    	MPInstance insta = new MPInstance(ctx, poInfo.getAD_PInstance_ID(), null);
+				    	if(insta!= null && insta.getLog().length>0) {
+				    		MPInstanceLog[] logs = insta.getLog();
+				    		List<X_AD_PInstance_Log> array = new Query(ctx, X_AD_PInstance_Log.Table_Name, "AD_PInstance_ID=?", null)
+				    				.setParameters(poInfo.getAD_PInstance_ID())
+				    				.list();
+				    		StringBuilder respLink = new StringBuilder();
+				    		UriInfo infoURI = (UriInfo) bodyJson.get("URI");
+				    		URI url = infoURI.getBaseUri();
+				    		int countLog = 0;
+				    		for (X_AD_PInstance_Log lg : array) {
+				    			if(countLog>0)
+				    				respLink.append(",");
+				    			respLink.append("{").append("\"msg\": \""+lg.getP_Msg()+"\"");
+				    			respLink.append(", \"link\": \"");
+				    			if(lg.getAD_Table_ID()>0 && lg.getRecord_ID()>0)
+				    				respLink.append("http://"+url.getAuthority()+"/webui/index.zul?Action=Zoom&AD_Table_ID=" + lg.getAD_Table_ID() + "&Record_ID=" + lg.getRecord_ID());
+				    			else
+				    				respLink.append("null");
+				    			respLink.append("\"}");
+				    			countLog++;
+							}
+				    		resp = Response.status(Response.Status.ACCEPTED).entity("{\"cod\":\"OK\",\"message\":["+respLink+"]}").build();
+				    	}
+				    }
 				}
 			}
 			
