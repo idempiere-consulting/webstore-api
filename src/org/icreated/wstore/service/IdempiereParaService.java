@@ -277,14 +277,18 @@ public class IdempiereParaService extends AService {
 						
 						X_WS_WebServiceFieldInput inputField = webREST.getFieldInput(input_C);
 						MColumn col = MColumn.get(ctx, inputField.getAD_Column_ID());
-						if (DisplayType.isDate(col.getAD_Reference_ID()))
-							po.set_ValueOfColumn(input_C, Timestamp.valueOf((String)bodyJson.get(input_C)));
-						else if (DisplayType.isNumeric (col.getAD_Reference_ID ()))
-							po.set_ValueOfColumn(input_C, new BigDecimal((String)bodyJson.get(input_C)));
+						if (DisplayType.isDate(col.getAD_Reference_ID())) {
+							if((String)bodyJson.get(input_C)!=null && !((String)bodyJson.get(input_C)).isEmpty())
+								po.set_ValueOfColumn(input_C, Timestamp.valueOf((String)bodyJson.get(input_C)));
+						}
+						else if (DisplayType.isNumeric (col.getAD_Reference_ID ())) {
+							if((String)bodyJson.get(input_C)!=null && !((String)bodyJson.get(input_C)).isEmpty())
+								po.set_ValueOfColumn(input_C, new BigDecimal((String)bodyJson.get(input_C)));
+						}
 						else
 							po.set_ValueOfColumn(input_C, bodyJson.get(input_C));
 					}
-					po.getCtx().put("#AD_Client_ID", po.get_Value("AD_client_ID"));
+					po.getCtx().put("#AD_Client_ID", po.get_Value("AD_Client_ID"));
 					if(po.save())
 						resp = Response.status(Response.Status.ACCEPTED).entity("{\"message\":\"model aggiornato\"}").build();
 					else 
