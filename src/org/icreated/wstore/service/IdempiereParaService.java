@@ -338,8 +338,10 @@ public class IdempiereParaService extends AService {
 				}
 				
 				po.getCtx().put("#AD_Client_ID", po.get_Value("AD_client_ID"));
-				if(po.save())
-					resp = Response.status(Response.Status.ACCEPTED).entity("{\"message\":\"model inserito\"}").build();
+				if(po.save()) {
+					po.load(po.get_TrxName());
+					resp = Response.status(Response.Status.ACCEPTED).entity("{\"message\":\"model inserito\", \"record_id\":\""+po.get_ID()+"\"}").build();
+				}
 				else 
 					resp = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("{\"message\":\"model NON inserito\"}").build();	
 			}
