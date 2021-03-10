@@ -21,5 +21,7 @@
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-jaxrs2.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/swagger-models.jar"/>
 	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jersey-container-servlet.jar"/>
+	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jersey-guava.jar"/>
+	<classpathentry exported="true" kind="lib" path="WEB-INF/lib/jersey-common.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WebStore API
 Bundle-SymbolicName: org.icreated.wstore.api;singleton:=true
-Bundle-Version: 7.1.0.qualifier
+Bundle-Version: 8.1.0.qualifier
 Bundle-Vendor: ICreated
 Bundle-Activator: org.icreated.wstore.api.Activator
 Bundle-ActivationPolicy: lazy
@@ -20,7 +20,9 @@ Bundle-ClassPath: .,
  WEB-INF/lib/swagger-jaxrs2-servlet-initializer.jar,
  WEB-INF/lib/swagger-jaxrs2.jar,
  WEB-INF/lib/swagger-models.jar,
- WEB-INF/lib/jersey-container-servlet.jar
+ WEB-INF/lib/jersey-container-servlet.jar,
+ WEB-INF/lib/jersey-guava.jar,
+ WEB-INF/lib/jersey-common.jar
 Automatic-Module-Name: org.icreated.wstore.api
 Comment: Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version>=1.11))"
@@ -54,8 +56,6 @@ Import-Package: com.fasterxml.jackson.annotation,
  javax.ws.rs.core,
  javax.ws.rs.ext;version="2.1.5",
  javax.xml.bind.annotation;version="2.3.2",
- jersey.repackaged.com.google.common.base;version="2.22.1",
- jersey.repackaged.com.google.common.collect;version="2.22.1",
  org.apache.commons.codec;version="1.10.0",
  org.apache.commons.codec.binary;version="1.10.0",
  org.apache.commons.io,
@@ -74,7 +74,6 @@ Import-Package: com.fasterxml.jackson.annotation,
  org.glassfish.jersey.client.authentication;version="2.22.1",
  org.glassfish.jersey.client.filter;version="2.22.1",
  org.glassfish.jersey.client.spi;version="2.22.1",
- org.glassfish.jersey.filter;version="2.22.1",
  org.glassfish.jersey.internal;version="2.22.1",
  org.glassfish.jersey.internal.inject;version="2.22.1",
  org.glassfish.jersey.internal.l10n;version="2.22.1",
